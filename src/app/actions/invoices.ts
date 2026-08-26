@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { Invoice, InvoiceItem, InvoiceStatus } from "@/lib/types";
+import type { Invoice, InvoiceStatus, InvoiceWithDetails } from "@/lib/types";
 import type { ActionResult } from "@/lib/action-result";
 
 // ---------------------
@@ -19,10 +19,7 @@ interface CreateInvoiceInput {
   client_id: string;
   due_date: string;
   items: InvoiceItemInput[];
-}
-
-interface InvoiceWithItems extends Invoice {
-  invoice_items: InvoiceItem[];
+  total_amount?: number;
 }
 
 // ---------------------
@@ -70,21 +67,22 @@ async function getAuthenticatedUser() {
 // CRUD Operations
 // ---------------------
 
-export async function getInvoices(): Promise<ActionResult<InvoiceWithItems[]>> {
+export async function getInvoices(): Promise<ActionResult<InvoiceWithDetails[]>> {
   const { supabase, user } = await getAuthenticatedUser();
 
   if (!user) {
     return { success: false, error: "Not authenticated." };
   }
 
-  // Fetch invoices for the current user's clients, including items
   const { data, error } = await supabase
     .from("invoices")
-    .select(`
+    .select(
+      `
       *,
       invoice_items (*),
-      clients!inner (user_id)
-    `)
+      clients!inner (id, name, email, address)
+    `
+    )
     .eq("clients.user_id", user.id)
     .order("created_at", { ascending: false });
 
@@ -92,17 +90,12 @@ export async function getInvoices(): Promise<ActionResult<InvoiceWithItems[]>> {
     return { success: false, error: error.message };
   }
 
-  // Strip the joined clients data — only needed for the RLS filter
-  const invoices = (data ?? []).map(
-    ({ clients: _clients, ...invoice }) => invoice
-  ) as InvoiceWithItems[];
-
-  return { success: true, data: invoices };
+  return { success: true, data: (data ?? []) as InvoiceWithDetails[] };
 }
 
 export async function getInvoice(
   invoiceId: string
-): Promise<ActionResult<InvoiceWithItems>> {
+): Promise<ActionResult<InvoiceWithDetails>> {
   const { supabase, user } = await getAuthenticatedUser();
 
   if (!user) {
@@ -111,11 +104,13 @@ export async function getInvoice(
 
   const { data, error } = await supabase
     .from("invoices")
-    .select(`
+    .select(
+      `
       *,
       invoice_items (*),
-      clients!inner (user_id)
-    `)
+      clients!inner (id, name, email, address)
+    `
+    )
     .eq("id", invoiceId)
     .eq("clients.user_id", user.id)
     .single();
@@ -124,8 +119,7 @@ export async function getInvoice(
     return { success: false, error: error.message };
   }
 
-  const { clients: _clients, ...invoice } = data;
-  return { success: true, data: invoice as InvoiceWithItems };
+  return { success: true, data: data as InvoiceWithDetails };
 }
 
 export async function createInvoiceAction(
@@ -154,7 +148,8 @@ export async function createInvoiceAction(
     return { success: false, error: "Client not found." };
   }
 
-  const totalAmount = calculateTotal(input.items);
+  // Use provided total (includes tax) or calculate from items
+  const totalAmount = input.total_amount ?? calculateTotal(input.items);
 
   // Insert invoice
   const { data: invoice, error: invoiceError } = await supabase
@@ -169,7 +164,10 @@ export async function createInvoiceAction(
     .single();
 
   if (invoiceError || !invoice) {
-    return { success: false, error: invoiceError?.message ?? "Failed to create invoice." };
+    return {
+      success: false,
+      error: invoiceError?.message ?? "Failed to create invoice.",
+    };
   }
 
   // Insert invoice items
@@ -209,7 +207,6 @@ export async function updateInvoiceStatusAction(
     return { success: false, error: "Not authenticated." };
   }
 
-  // RLS handles ownership, but we also filter explicitly
   const { data, error } = await supabase
     .from("invoices")
     .update({ status })

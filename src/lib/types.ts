@@ -27,3 +27,9 @@ export interface InvoiceItem {
   quantity: number;
   price: number;
 }
+
+/** Invoice with nested client info and line items — used for list display and PDF */
+export interface InvoiceWithDetails extends Invoice {
+  invoice_items: InvoiceItem[];
+  clients: Pick<Client, "id" | "name" | "email" | "address">;
+}
