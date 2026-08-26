@@ -1,0 +1,22 @@
+# Website Fixes Audit
+
+- [ ] 1. Fix horizontal scroll
+- [ ] 2. Find broken links
+- [ ] 3. Add mobile menu
+- [ ] 4. Add favicon
+- [ ] 5. Fix page titles
+- [ ] 6. Add meta description
+- [ ] 7. Fix footer links
+- [ ] 8. Custom 404 page
+- [ ] 9. Copyright year
+- [ ] 10. Compress images
+- [ ] 11. Fix broken buttons
+- [ ] 12. Success messages
+- [ ] 13. Error messages
+- [ ] 14. Fix placeholder text
+- [ ] 15. Remove unused nav
+- [ ] 16. Fix mobile overflow
+- [ ] 17. Clickable logo
+- [ ] 18. Clickable number
+- [ ] 19. Clickable email
+- [ ] 20. Mobile optimise

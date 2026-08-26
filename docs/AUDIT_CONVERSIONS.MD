@@ -1,0 +1,22 @@
+# Conversion Issues Audit
+
+- [ ] 1. Fix too many popups
+- [ ] 2. Fix confusing headline
+- [ ] 3. Add clear CTA
+- [ ] 4. Remove AI slop images
+- [ ] 5. Fix competing CTAs
+- [ ] 6. Fix slow page speed
+- [ ] 7. Break down walls of text
+- [ ] 8. Rewrite generic AI copy
+- [ ] 9. Clarify vague value prop
+- [ ] 10. Add clear next step
+- [ ] 11. Fix poor mobile design
+- [ ] 12. Replace stock images
+- [ ] 13. Reduce too many animations
+- [ ] 14. Remove video background
+- [ ] 15. Remove unnecessary forms
+- [ ] 16. Stop hiding pricing
+- [ ] 17. Add social proof
+- [ ] 18. Fix broken links & buttons
+- [ ] 19. Clean up distracting navigation
+- [ ] 20. Remove unnecessary cookies

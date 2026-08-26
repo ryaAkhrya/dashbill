@@ -1,0 +1,22 @@
+# Feature Additions Audit
+
+- [ ] 1. Dark mode toggle
+- [ ] 2. Simple cookie banner
+- [ ] 3. Site search
+- [ ] 4. Back to top button
+- [ ] 5. Mobile menus
+- [ ] 6. Loading animations
+- [ ] 7. Hover states
+- [ ] 8. Scroll progress bars
+- [ ] 9. Copy button
+- [ ] 10. Print stylesheet
+- [ ] 11. Sticky headers
+- [ ] 12. Skip to content
+- [ ] 13. Password visibility toggle
+- [ ] 14. UTM tracking
+- [ ] 15. Form success state
+- [ ] 16. Form error state
+- [ ] 17. Confirmation modals
+- [ ] 18. Last updated date
+- [ ] 19. Expandable FAQ
+- [ ] 20. Floating contact

@@ -1,0 +1,22 @@
+# Security Checks Audit
+
+- [ ] 1. Hide API keys
+- [ ] 2. Check env variables
+- [ ] 3. Check keys in git
+- [ ] 4. Protect admin routes
+- [ ] 5. Add auth
+- [ ] 6. Check user permissions
+- [ ] 7. Sanitize user inputs
+- [ ] 8. Protect against XSS
+- [ ] 9. SQL injection protection
+- [ ] 10. Check DB rules
+- [ ] 11. Add rate limiting
+- [ ] 12. Set spend cap
+- [ ] 13. Secure file uploads
+- [ ] 14. CSRF protection
+- [ ] 15. Check CORS settings
+- [ ] 16. Enable HTTPS
+- [ ] 17. Add security headers
+- [ ] 18. Secure cookies
+- [ ] 19. Disable debug mode
+- [ ] 20. Check production settings

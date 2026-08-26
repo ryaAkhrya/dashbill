@@ -1,0 +1,22 @@
+# Vibecoded Website Giveaways (Things to Avoid)
+
+- [ ] 1. Avoid vercel.app url (If possible/production)
+- [ ] 2. Remove generic purple gradient
+- [ ] 3. Replace AI slop photos with real/custom assets
+- [ ] 4. Remove fake reviews
+- [ ] 5. Fix broken buttons
+- [ ] 6. Minimize unnecessary scroll animations
+- [ ] 7. Expand beyond a one page site (if applicable)
+- [ ] 8. Upgrade text only logo
+- [ ] 9. Add favicon
+- [ ] 10. Fix hero text colour contrast
+- [ ] 11. Add Privacy Policy
+- [ ] 12. Add T&C's (Terms & Conditions)
+- [ ] 13. Remove fake visitor count
+- [ ] 14. Validate customer count (Don't fake it)
+- [ ] 15. Remove fake metrics
+- [ ] 16. Replace generic emoji icons with proper SVG/UI icons
+- [ ] 17. Rewrite vague hero section
+- [ ] 18. Remove cursive font
+- [ ] 19. Remove 'Lovable' or other AI-builder tags
+- [ ] 20. Avoid excessive em dashes
