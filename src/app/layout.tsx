@@ -2,9 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DashBill — Invoice Dashboard for Freelancers",
-  description:
-    "Manage clients, track invoices, and generate PDF bills. Built for freelancers who value speed and clarity.",
+  title: "DashBill — Invoicing for Freelancers",
+  description: "Create, manage, and export professional PDF invoices in seconds. Built for freelancers who value speed and clarity.",
+  keywords: ["invoice", "freelancer", "billing", "pdf export", "dashbill", "dashboard"],
+  openGraph: {
+    title: "DashBill — Invoicing for Freelancers",
+    description: "Create, manage, and export professional PDF invoices in seconds.",
+    type: "website",
+    locale: "en_US",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
