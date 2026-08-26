@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* ===========================
+   DashBill — Neobrutalism Design System
+   =========================== */
+
+@theme inline {
+  /* Color Palette (UI_UX_GUIDELINES.md) */
+  --color-background: #FFFFFF;
+  --color-background-muted: #F9FAFB;
+  --color-foreground: #000000;
+
+  --color-primary: #FBBF24;
+  --color-secondary: #38BDF8;
+  --color-destructive: #EF4444;
+  --color-destructive-soft: #F472B6;
+
+  /* Neobrutalism Shadows */
+  --shadow-brutal: 4px 4px 0px #000;
+  --shadow-brutal-sm: 2px 2px 0px #000;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ===========================
+   Base Styles
+   =========================== */
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================
+   Neobrutalism Utility Classes
+   =========================== */
+
+/* Standard brutal card / container */
+.neo-card {
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  background: var(--color-background);
+}
+
+/* Brutal button base */
+.neo-btn {
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  font-weight: 700;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+
+.neo-btn:hover {
+  box-shadow: 2px 2px 0px #000;
+  transform: translate(2px, 2px);
+}
+
+.neo-btn:active {
+  box-shadow: 0px 0px 0px #000;
+  transform: translate(4px, 4px);
+}
+
+/* Primary variant */
+.neo-btn-primary {
+  background: var(--color-primary);
+  color: #000;
+}
+
+/* Secondary variant */
+.neo-btn-secondary {
+  background: var(--color-secondary);
+  color: #000;
+}
+
+/* Destructive variant */
+.neo-btn-destructive {
+  background: var(--color-destructive);
+  color: #fff;
+}
+
+/* Ghost variant */
+.neo-btn-ghost {
+  background: var(--color-background);
+  color: #000;
+}
+
+/* Brutal input */
+.neo-input {
+  border: 2px solid #000;
+  background: var(--color-background);
+  outline: none;
+  transition: box-shadow 0.1s ease;
+}
+
+.neo-input:focus {
+  box-shadow: 4px 4px 0px #000;
+}
+
+/* Brutal badge */
+.neo-badge {
+  border: 2px solid #000;
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+}
+
+/* Heading weight override for Neobrutalism */
+h1, h2, h3 {
+  font-weight: 800;
+}
