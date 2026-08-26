@@ -9,7 +9,7 @@ interface HeaderProps {
 
 export function Header({ userEmail, onToggleSidebar }: HeaderProps) {
   return (
-    <header className="h-16 flex items-center justify-between px-6 border-b-2 border-black bg-background shrink-0">
+    <header className="h-16 flex items-center justify-between px-6 border-b-[3px] border-black bg-background shrink-0">
       {/* Left: Mobile menu toggle */}
       <button
         onClick={onToggleSidebar}

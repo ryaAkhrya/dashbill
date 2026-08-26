@@ -36,9 +36,15 @@ export default async function NewInvoicePage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl mb-6">Create Invoice</h1>
-      <InvoiceForm clients={result.data} />
+    <div className="max-w-4xl mx-auto space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-[900] tracking-tight text-black">New Invoice</h1>
+          <p className="font-bold text-foreground/60 mt-1">Draft a new bill for your client.</p>
+        </div>
+      </div>
+      
+      <InvoiceForm clients={result.data || []} />
     </div>
   );
 }

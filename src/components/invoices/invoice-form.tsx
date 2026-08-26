@@ -75,213 +75,229 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl">
-      {error && (
-        <div className="border-2 border-destructive bg-destructive/10 text-destructive rounded-md p-3 mb-4 text-sm font-bold">
-          {error}
-        </div>
-      )}
+    <form onSubmit={handleSubmit} className="w-full flex flex-col lg:flex-row gap-8 items-start">
+      <div className="flex-1 w-full space-y-6">
+        {error && (
+          <div className="border-[3px] border-black bg-[#FCA5A5] text-black shadow-[4px_4px_0px_#000] p-4 font-black uppercase tracking-wide">
+            {error}
+          </div>
+        )}
 
-      <div className="neo-card rounded-md p-6 mb-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Client select */}
-          <div>
-            <label
-              htmlFor="invoice-client"
-              className="block text-sm font-bold mb-1"
+        {/* Client & Date Details */}
+        <div className="neo-card p-6 bg-[#D8B4FE] border-[3px] shadow-[6px_6px_0px_#000]">
+          <h2 className="text-xl font-[900] uppercase tracking-wide border-b-[3px] border-black pb-3 mb-4 text-black">
+            Invoice Details
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label
+                htmlFor="invoice-client"
+                className="block text-sm font-[900] uppercase mb-2 text-black"
+              >
+                Client
+              </label>
+              <select
+                id="invoice-client"
+                required
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+                className="neo-input w-full px-4 py-3 rounded-none border-[3px] text-black font-bold focus:shadow-[4px_4px_0px_#000]"
+              >
+                <option value="">Select a client</option>
+                {clients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="invoice-due-date"
+                className="block text-sm font-[900] uppercase mb-2 text-black"
+              >
+                Due Date
+              </label>
+              <input
+                id="invoice-due-date"
+                type="date"
+                required
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="neo-input w-full px-4 py-3 rounded-none border-[3px] text-black font-bold focus:shadow-[4px_4px_0px_#000]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Line items */}
+        <div className="neo-card p-6 bg-white border-[3px] shadow-[6px_6px_0px_#000]">
+          <div className="flex items-center justify-between border-b-[3px] border-black pb-3 mb-4">
+            <h2 className="text-xl font-[900] uppercase tracking-wide text-black">
+              Line Items
+            </h2>
+            <button
+              type="button"
+              onClick={addItem}
+              className="neo-btn bg-[#A6FF00] rounded-none px-4 py-1.5 text-sm uppercase tracking-wider text-black border-[3px]"
             >
-              Client
-            </label>
-            <select
-              id="invoice-client"
-              required
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              className="neo-input w-full px-3 py-2 rounded-md"
-            >
-              <option value="">Select a client</option>
-              {clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </select>
+              + Add Row
+            </button>
           </div>
 
-          {/* Due date */}
-          <div>
-            <label
-              htmlFor="invoice-due-date"
-              className="block text-sm font-bold mb-1"
-            >
-              Due Date
-            </label>
-            <input
-              id="invoice-due-date"
-              type="date"
-              required
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="neo-input w-full px-3 py-2 rounded-md"
-            />
+          <div className="space-y-4">
+            {/* Header row (desktop) */}
+            <div className="hidden sm:grid grid-cols-12 gap-3 text-xs font-[900] uppercase tracking-wider text-black">
+              <div className="col-span-6">Description</div>
+              <div className="col-span-2">Qty</div>
+              <div className="col-span-2">Price</div>
+              <div className="col-span-2 text-right">Amount</div>
+            </div>
+
+            {items.map((item, index) => {
+              const lineTotal = item.quantity * item.price;
+              return (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end bg-black/5 p-4 sm:p-2 sm:bg-transparent border-[3px] sm:border-0 border-black relative"
+                >
+                  <div className="sm:col-span-6">
+                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                      Description
+                    </label>
+                    <input
+                      required
+                      value={item.description}
+                      onChange={(e) =>
+                        updateItem(index, "description", e.target.value)
+                      }
+                      placeholder="Service description"
+                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                      Qty
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateItem(
+                          index,
+                          "quantity",
+                          parseInt(e.target.value) || 0
+                        )
+                      }
+                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                      Price
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min={0}
+                      step={0.01}
+                      value={item.price}
+                      onChange={(e) =>
+                        updateItem(
+                          index,
+                          "price",
+                          parseFloat(e.target.value) || 0
+                        )
+                      }
+                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                    />
+                  </div>
+                  <div className="sm:col-span-2 flex items-center justify-between sm:justify-end gap-2">
+                    <span className="text-base font-black text-black bg-[#FFE600] px-2 py-1 border-[2px] border-black sm:bg-transparent sm:border-0 sm:px-0">
+                      {formatCurrency(lineTotal)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(index)}
+                      disabled={items.length === 1}
+                      className="text-white bg-[#F87171] border-[2px] border-black disabled:opacity-50 disabled:bg-gray-400 px-2 py-0.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-transform shadow-[2px_2px_0px_#000] active:shadow-none font-bold"
+                      aria-label="Remove item"
+                    >
+                      &#x2715;
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Line items */}
-      <div className="neo-card rounded-md p-6 mb-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg">Line Items</h2>
+      {/* Totals & Submit Sidebar */}
+      <div className="w-full lg:w-80 shrink-0 space-y-6">
+        <div className="neo-card p-6 bg-[#FFE600] border-[3px] shadow-[6px_6px_0px_#000]">
+          <h2 className="text-xl font-[900] uppercase tracking-wide border-b-[3px] border-black pb-3 mb-4 text-black">
+            Summary
+          </h2>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm font-bold">
+              <span className="uppercase text-black/70">Subtotal</span>
+              <span className="text-lg">{formatCurrency(subtotal)}</span>
+            </div>
+            
+            <div className="flex justify-between items-center gap-2 font-bold">
+              <label
+                htmlFor="tax-rate"
+                className="uppercase text-black/70 text-sm shrink-0"
+              >
+                Tax (%)
+              </label>
+              <input
+                id="tax-rate"
+                type="number"
+                min={0}
+                max={100}
+                step={0.1}
+                value={taxRate}
+                onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
+                className="neo-input px-2 py-1 rounded-none border-[2px] text-sm w-20 text-right bg-white"
+              />
+            </div>
+            
+            <div className="flex justify-between items-center text-sm font-bold border-b-[3px] border-black pb-4">
+              <span className="uppercase text-black/70">Tax Amt</span>
+              <span className="text-lg">{formatCurrency(taxAmount)}</span>
+            </div>
+
+            <div className="flex justify-between items-center pt-2">
+              <span className="font-[900] uppercase text-black text-xl">Total</span>
+              <span className="font-[900] text-3xl bg-white px-2 py-1 border-[3px] border-black shadow-[2px_2px_0px_#000] -rotate-1">
+                {formatCurrency(total)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Submit Actions */}
+        <div className="flex flex-col gap-3">
+          <button
+            type="submit"
+            disabled={loading}
+            className="neo-btn bg-[#60A5FA] border-[3px] text-black px-6 py-4 text-lg font-black uppercase tracking-wider rounded-none shadow-[6px_6px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#000] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+          >
+            {loading ? "Creating..." : "Save Invoice"}
+          </button>
           <button
             type="button"
-            onClick={addItem}
-            className="neo-btn neo-btn-ghost rounded-md px-3 py-1 text-sm"
+            onClick={() => router.back()}
+            className="neo-btn bg-white border-[3px] text-black px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-none shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_#000]"
           >
-            + Add Row
+            Cancel
           </button>
         </div>
-
-        <div className="space-y-3">
-          {/* Header row (desktop) */}
-          <div className="hidden sm:grid grid-cols-12 gap-2 text-sm font-bold text-foreground/60 px-1">
-            <div className="col-span-5">Description</div>
-            <div className="col-span-2">Qty</div>
-            <div className="col-span-2">Price</div>
-            <div className="col-span-2 text-right">Amount</div>
-            <div className="col-span-1" />
-          </div>
-
-          {items.map((item, index) => {
-            const lineTotal = item.quantity * item.price;
-            return (
-              <div
-                key={index}
-                className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end"
-              >
-                <div className="sm:col-span-5">
-                  <label className="block text-xs font-bold mb-1 sm:hidden">
-                    Description
-                  </label>
-                  <input
-                    required
-                    value={item.description}
-                    onChange={(e) =>
-                      updateItem(index, "description", e.target.value)
-                    }
-                    placeholder="Service description"
-                    className="neo-input w-full px-3 py-2 rounded-md text-sm"
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold mb-1 sm:hidden">
-                    Qty
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min={1}
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateItem(index, "quantity", parseInt(e.target.value) || 0)
-                    }
-                    className="neo-input w-full px-3 py-2 rounded-md text-sm"
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold mb-1 sm:hidden">
-                    Price
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min={0}
-                    step={0.01}
-                    value={item.price}
-                    onChange={(e) =>
-                      updateItem(
-                        index,
-                        "price",
-                        parseFloat(e.target.value) || 0
-                      )
-                    }
-                    className="neo-input w-full px-3 py-2 rounded-md text-sm"
-                  />
-                </div>
-                <div className="sm:col-span-2 flex items-center justify-end">
-                  <span className="text-sm font-bold">
-                    {formatCurrency(lineTotal)}
-                  </span>
-                </div>
-                <div className="sm:col-span-1 flex items-center justify-end">
-                  <button
-                    type="button"
-                    onClick={() => removeItem(index)}
-                    disabled={items.length === 1}
-                    className="text-destructive font-bold text-lg disabled:opacity-30 px-2"
-                    aria-label="Remove item"
-                  >
-                    &#x2715;
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Totals */}
-      <div className="neo-card rounded-md p-6 mb-6">
-        <div className="max-w-xs ml-auto space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-foreground/60">Subtotal</span>
-            <span className="font-bold">{formatCurrency(subtotal)}</span>
-          </div>
-          <div className="flex justify-between text-sm items-center gap-2">
-            <label
-              htmlFor="tax-rate"
-              className="text-foreground/60 shrink-0"
-            >
-              Tax (%)
-            </label>
-            <input
-              id="tax-rate"
-              type="number"
-              min={0}
-              max={100}
-              step={0.1}
-              value={taxRate}
-              onChange={(e) =>
-                setTaxRate(parseFloat(e.target.value) || 0)
-              }
-              className="neo-input px-2 py-1 rounded-md text-sm w-20 text-right"
-            />
-            <span className="font-bold w-24 text-right">
-              {formatCurrency(taxAmount)}
-            </span>
-          </div>
-          <div className="flex justify-between text-lg pt-2 border-t-2 border-black">
-            <span className="font-bold">Total</span>
-            <span className="font-[900]">{formatCurrency(total)}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Submit */}
-      <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="neo-btn neo-btn-ghost rounded-md px-6 py-3"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={loading}
-          className="neo-btn neo-btn-primary rounded-md px-6 py-3"
-        >
-          {loading ? "Creating..." : "Create Invoice"}
-        </button>
       </div>
     </form>
   );

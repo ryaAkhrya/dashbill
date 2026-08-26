@@ -23,7 +23,7 @@ export function DashboardShell({ children, userEmail }: DashboardShellProps) {
           userEmail={userEmail}
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
         />
-        <main className="flex-1 overflow-auto p-6 bg-background-muted">
+        <main className="flex-1 overflow-auto p-6 sm:p-10 dot-pattern">
           {children}
         </main>
       </div>

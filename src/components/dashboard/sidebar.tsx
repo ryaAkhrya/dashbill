@@ -30,24 +30,24 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-background border-r-2 border-black
+          w-64 bg-background border-r-[3px] border-black
           flex flex-col
           transform transition-transform duration-200 lg:translate-x-0
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Brand */}
-        <div className="h-16 flex items-center px-6 border-b-2 border-black shrink-0">
+        <div className="h-16 flex items-center px-6 border-b-[3px] border-black shrink-0">
           <Link
             href="/dashboard"
-            className="text-xl font-[900] tracking-tight"
+            className="text-2xl font-[900] tracking-tight text-black"
           >
             DashBill
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 flex flex-col gap-1 flex-1">
+        <nav className="p-4 flex flex-col gap-3 flex-1 font-[900]">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -59,12 +59,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 href={item.href}
                 onClick={onClose}
                 className={`
-                  flex items-center gap-3 px-4 py-3 font-bold text-sm
-                  border-2 rounded-md transition-all
+                  flex items-center gap-3 px-4 py-3 text-sm
+                  border-[3px] rounded-md transition-all uppercase tracking-wide
                   ${
                     isActive
-                      ? "bg-primary border-black [box-shadow:2px_2px_0px_#000]"
-                      : "border-transparent hover:bg-background-muted hover:border-black"
+                      ? "bg-primary border-black shadow-[4px_4px_0px_#000] translate-y-[-2px] translate-x-[-2px]"
+                      : "border-transparent text-foreground/70 hover:bg-black/5 hover:text-black"
                   }
                 `}
               >

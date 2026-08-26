@@ -1,134 +1,102 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import type { Client } from "@/lib/types";
 import { deleteClientAction } from "@/app/actions/clients";
 import { ClientFormModal } from "./client-form-modal";
-import type { Client } from "@/lib/types";
+import { redirect } from "next/navigation";
 
-export function ClientList({
-  initialClients,
-}: {
-  initialClients: Client[];
-}) {
-  const router = useRouter();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingClient, setEditingClient] = useState<Client | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+interface ClientListProps {
+  clients: Client[];
+}
+
+export function ClientList({ clients }: ClientListProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clientToEdit, setClientToEdit] = useState<Client | null>(null);
 
   function handleAdd() {
-    setEditingClient(null);
-    setModalOpen(true);
+    setClientToEdit(null);
+    setIsModalOpen(true);
   }
 
   function handleEdit(client: Client) {
-    setEditingClient(client);
-    setModalOpen(true);
-  }
-
-  async function handleDelete(clientId: string) {
-    if (
-      !confirm(
-        "Delete this client? All associated invoices will also be deleted."
-      )
-    )
-      return;
-
-    setDeletingId(clientId);
-    const result = await deleteClientAction(clientId);
-    setDeletingId(null);
-
-    if (result.success) {
-      router.refresh();
-    }
-  }
-
-  function handleSuccess() {
-    router.refresh();
+    setClientToEdit(client);
+    setIsModalOpen(true);
   }
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl">Clients</h1>
+        <h2 className="text-2xl font-[900] text-black">Client Database</h2>
         <button
           onClick={handleAdd}
-          className="neo-btn neo-btn-primary rounded-md px-4 py-2 text-sm"
+          className="neo-btn neo-btn-primary rounded-none px-6 py-3 text-sm font-black uppercase tracking-wider bg-[#A6FF00]"
         >
           + Add Client
         </button>
       </div>
 
-      {initialClients.length === 0 ? (
-        <div className="neo-card rounded-md p-8 text-center">
-          <p className="text-foreground/60 font-bold">No clients yet.</p>
-          <p className="text-sm text-foreground/40 mt-1">
-            Add your first client to get started.
-          </p>
+      {!clients.length ? (
+        <div className="neo-card p-12 text-center bg-white border-[3px]">
+          <h3 className="text-2xl font-[900] mb-2">No clients yet</h3>
+          <p className="text-foreground/70 font-bold">Add your first client to get started.</p>
         </div>
       ) : (
-        <div className="neo-card rounded-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-black bg-background-muted">
-                  <th className="text-left px-4 py-3 text-sm font-bold">
-                    Name
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-bold hidden sm:table-cell">
-                    Email
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-bold hidden md:table-cell">
-                    Address
-                  </th>
-                  <th className="text-right px-4 py-3 text-sm font-bold w-40">
-                    Actions
-                  </th>
+        <div className="neo-card overflow-x-auto bg-white border-[3px] shadow-[6px_6px_0px_#000]">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#D8B4FE] border-b-[3px] border-black">
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black">Name</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black">Email</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black">Address</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm w-40 text-black">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clients.map((client, idx) => (
+                <tr
+                  key={client.id}
+                  className={`
+                    group transition-all hover:bg-black/5
+                    ${idx !== clients.length - 1 ? "border-b-[3px] border-black" : ""}
+                  `}
+                >
+                  <td className="p-4 font-[900] border-r-[3px] border-black text-black">{client.name}</td>
+                  <td className="p-4 font-bold border-r-[3px] border-black">{client.email}</td>
+                  <td className="p-4 font-bold border-r-[3px] border-black whitespace-pre-wrap">{client.address || "—"}</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(client)}
+                        className="px-3 py-1.5 border-[3px] border-black font-black text-xs uppercase bg-[#60A5FA] shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-black"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (confirm("Delete this client?")) {
+                            await deleteClientAction(client.id);
+                          }
+                        }}
+                        className="px-3 py-1.5 border-[3px] border-black font-black text-xs uppercase bg-[#F87171] shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-black"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {initialClients.map((client) => (
-                  <tr
-                    key={client.id}
-                    className="border-b border-black/10 last:border-0"
-                  >
-                    <td className="px-4 py-3 font-bold">{client.name}</td>
-                    <td className="px-4 py-3 text-sm hidden sm:table-cell">
-                      {client.email}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-foreground/60 hidden md:table-cell">
-                      {client.address || "\u2014"}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleEdit(client)}
-                          className="neo-btn neo-btn-ghost rounded-md px-3 py-1 text-sm"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(client.id)}
-                          disabled={deletingId === client.id}
-                          className="neo-btn neo-btn-destructive rounded-md px-3 py-1 text-sm"
-                        >
-                          {deletingId === client.id ? "..." : "Delete"}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
       <ClientFormModal
-        client={editingClient}
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={handleSuccess}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        client={clientToEdit}
+        onSuccess={() => setIsModalOpen(false)}
       />
     </div>
   );

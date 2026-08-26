@@ -55,10 +55,10 @@ export function ClientFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="neo-card rounded-md p-6 w-full max-w-md relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl">
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="neo-modal rounded-none p-8 w-full max-w-md relative z-10 border-[4px]">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-3xl font-[900] tracking-tight uppercase text-black">
             {isEditing ? "Edit Client" : "Add Client"}
           </h2>
           <button

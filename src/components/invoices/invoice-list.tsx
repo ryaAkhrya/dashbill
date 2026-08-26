@@ -63,126 +63,113 @@ export function InvoiceList({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <h1 className="text-2xl">Invoices</h1>
+      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+        {/* Status filter tabs (Button Group) */}
+        <div className="flex flex-wrap border-[3px] border-black bg-white shadow-[4px_4px_0px_#000]">
+          {STATUS_FILTERS.map((status, idx) => (
+            <button
+              key={status}
+              onClick={() => setActiveFilter(status)}
+              className={`px-4 py-2 text-sm font-black uppercase tracking-wider transition-all
+                ${idx !== STATUS_FILTERS.length - 1 ? "border-r-[3px] border-black" : ""}
+                ${
+                  activeFilter === status
+                    ? "bg-[#FFE600] text-black shadow-inner"
+                    : "bg-white text-foreground/60 hover:bg-black/5 hover:text-black"
+                }
+              `}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+
         <Link
           href="/dashboard/invoices/new"
-          className="neo-btn neo-btn-primary rounded-md px-4 py-2 text-sm"
+          className="neo-btn neo-btn-primary rounded-none px-6 py-3 text-sm font-black uppercase tracking-wider bg-[#A6FF00]"
         >
           + New Invoice
         </Link>
       </div>
 
-      {/* Status filter tabs */}
-      <div className="flex gap-2 mb-4 flex-wrap">
-        {STATUS_FILTERS.map((status) => (
-          <button
-            key={status}
-            onClick={() => setActiveFilter(status)}
-            className={`neo-btn rounded-md px-3 py-1.5 text-sm ${
-              activeFilter === status
-                ? "neo-btn-primary"
-                : "neo-btn-ghost"
-            }`}
-          >
-            {status}
-          </button>
-        ))}
-      </div>
-
       {filteredInvoices.length === 0 ? (
-        <div className="neo-card rounded-md p-8 text-center">
-          <p className="text-foreground/60 font-bold">No invoices found.</p>
-          <p className="text-sm text-foreground/40 mt-1">
+        <div className="neo-card p-12 text-center bg-white border-[3px]">
+          <h3 className="text-2xl font-[900] mb-2">No invoices found</h3>
+          <p className="text-foreground/70 font-bold">
             {activeFilter !== "All"
               ? `No invoices with status "${activeFilter}".`
               : "Create your first invoice to get started."}
           </p>
         </div>
       ) : (
-        <div className="neo-card rounded-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-black bg-background-muted">
-                  <th className="text-left px-4 py-3 text-sm font-bold">
-                    Invoice
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-bold hidden sm:table-cell">
-                    Client
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-bold">
-                    Status
-                  </th>
-                  <th className="text-right px-4 py-3 text-sm font-bold hidden md:table-cell">
-                    Amount
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-bold hidden lg:table-cell">
-                    Due Date
-                  </th>
-                  <th className="text-right px-4 py-3 text-sm font-bold w-48">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredInvoices.map((invoice) => {
-                  const next = nextStatus[invoice.status];
-                  return (
-                    <tr
-                      key={invoice.id}
-                      className="border-b border-black/10 last:border-0"
-                    >
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/dashboard/invoices/${invoice.id}`}
-                          className="font-bold text-sm underline"
-                        >
-                          #{invoice.id.slice(0, 8)}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-sm hidden sm:table-cell">
-                        {invoice.clients.name}
-                      </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={invoice.status} />
-                      </td>
-                      <td className="px-4 py-3 text-sm font-bold text-right hidden md:table-cell">
-                        {formatCurrency(Number(invoice.total_amount))}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-foreground/60 hidden lg:table-cell">
-                        {formatDate(invoice.due_date)}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          {next && (
-                            <button
-                              onClick={() =>
-                                handleStatusChange(invoice.id, next)
-                              }
-                              disabled={updatingId === invoice.id}
-                              className="neo-btn neo-btn-secondary rounded-md px-2 py-1 text-xs"
-                            >
-                              {updatingId === invoice.id
-                                ? "..."
-                                : `Mark ${next}`}
-                            </button>
-                          )}
+        <div className="neo-card overflow-x-auto bg-white border-[3px] shadow-[6px_6px_0px_#000]">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#FFE600] border-b-[3px] border-black">
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black">Invoice</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black hidden sm:table-cell">Client</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black">Status</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black text-right hidden md:table-cell">Amount</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm border-r-[3px] border-black text-black hidden lg:table-cell">Due Date</th>
+                <th className="p-4 font-[900] uppercase tracking-wider text-sm text-black text-right w-56">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredInvoices.map((invoice, idx) => {
+                const next = nextStatus[invoice.status];
+                return (
+                  <tr
+                    key={invoice.id}
+                    className={`
+                      group transition-all hover:bg-black/5 hover:-translate-y-0.5
+                      ${idx !== filteredInvoices.length - 1 ? "border-b-[3px] border-black" : ""}
+                    `}
+                  >
+                    <td className="p-4 font-[900] border-r-[3px] border-black">
+                      <Link
+                        href={`/dashboard/invoices/${invoice.id}`}
+                        className="underline hover:text-blue-600 transition-colors"
+                      >
+                        #{invoice.id.slice(0, 8)}
+                      </Link>
+                    </td>
+                    <td className="p-4 font-bold border-r-[3px] border-black hidden sm:table-cell">
+                      {invoice.clients.name}
+                    </td>
+                    <td className="p-4 font-bold border-r-[3px] border-black">
+                      <StatusBadge status={invoice.status} />
+                    </td>
+                    <td className="p-4 font-[900] border-r-[3px] border-black text-right hidden md:table-cell">
+                      {formatCurrency(Number(invoice.total_amount))}
+                    </td>
+                    <td className="p-4 font-bold border-r-[3px] border-black text-foreground/70 hidden lg:table-cell">
+                      {formatDate(invoice.due_date)}
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center justify-end gap-2">
+                        {next && (
                           <button
-                            onClick={() => handleDelete(invoice.id)}
-                            disabled={deletingId === invoice.id}
-                            className="neo-btn neo-btn-destructive rounded-md px-2 py-1 text-xs"
+                            onClick={() => handleStatusChange(invoice.id, next)}
+                            disabled={updatingId === invoice.id}
+                            className="px-3 py-1.5 border-[3px] border-black font-black text-xs uppercase bg-[#D8B4FE] shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-black whitespace-nowrap"
                           >
-                            {deletingId === invoice.id ? "..." : "Delete"}
+                            {updatingId === invoice.id ? "..." : `Mark ${next}`}
                           </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                        )}
+                        <button
+                          onClick={() => handleDelete(invoice.id)}
+                          disabled={deletingId === invoice.id}
+                          className="px-3 py-1.5 border-[3px] border-black font-black text-xs uppercase bg-[#F87171] shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-black"
+                        >
+                          {deletingId === invoice.id ? "..." : "Delete"}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
