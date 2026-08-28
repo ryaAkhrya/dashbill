@@ -40,18 +40,26 @@ export function FAQ() {
             >
               <button
                 onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full text-left px-6 py-4 flex items-center justify-between font-bold text-lg hover:bg-background-muted transition-colors focus:outline-none"
+                className="w-full text-left px-6 py-5 flex items-center justify-between font-bold text-lg hover:bg-primary/10 transition-colors focus:outline-none group"
+                aria-expanded={isOpen}
               >
-                {faq.question}
-                <span className="text-2xl leading-none">
+                <span className="pr-4">{faq.question}</span>
+                <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-sm border-2 border-black bg-white group-hover:bg-primary transition-colors text-xl font-black shadow-[2px_2px_0px_#000]">
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
-              {isOpen && (
-                <div className="px-6 pb-5 pt-1 text-foreground/80 border-t-2 border-black/10 font-medium leading-relaxed">
-                  {faq.answer}
+              
+              <div 
+                className={`grid transition-[grid-template-rows,opacity,padding] duration-300 ease-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="px-6 pb-6 pt-2 text-foreground/80 border-t-2 border-black/10 font-medium leading-relaxed">
+                    {faq.answer}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           );
         })}
