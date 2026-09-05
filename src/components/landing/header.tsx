@@ -18,21 +18,21 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full bg-background border-b-[2.5px] border-border transition-all duration-200 ${
-        scrolled ? "shadow-[0_2px_0px_var(--border)]" : ""
+      className={`sticky top-0 z-50 w-full bg-background transition-all duration-300 ${
+        scrolled ? "border-b-[2.5px] border-border shadow-[0_4px_24px_rgba(0,0,0,0.04)]" : "border-b-0"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-5 h-20 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+        <Link href="/" className="flex items-center gap-3 group shrink-0" onClick={() => setMobileMenuOpen(false)}>
           <div
-            className="w-8 h-8 bg-primary border-[2px] border-border flex items-center justify-center transition-transform duration-150 group-hover:-translate-y-0.5"
-            style={{ boxShadow: "2px 2px 0px var(--border)" }}
+            className="w-9 h-9 bg-primary border-[2.5px] border-border flex items-center justify-center transition-transform duration-200 group-hover:-translate-y-1"
+            style={{ boxShadow: "2px 2px 0px var(--shadow-color)" }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#111"
@@ -44,51 +44,56 @@ export function Header() {
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </div>
-          <span className="font-black text-xl tracking-tight">DashBill</span>
+          <span className="font-black text-2xl tracking-tight text-foreground">DashBill</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          <a
-            href="#features"
-            className="px-3 py-2 text-sm font-bold text-foreground/70 hover:text-foreground hover:bg-surface-elevated rounded-none transition-colors"
-          >
-            Features
-          </a>
-          <a
-            href="#faq"
-            className="px-3 py-2 text-sm font-bold text-foreground/70 hover:text-foreground hover:bg-surface-elevated rounded-none transition-colors"
-          >
-            FAQ
-          </a>
-        </nav>
+        {/* Desktop Nav (Visible on lg+) */}
+        <div className="hidden lg:flex items-center gap-8">
+          <nav className="flex items-center gap-6">
+            <a
+              href="#features"
+              className="text-sm font-bold text-muted hover:text-foreground transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#faq"
+              className="text-sm font-bold text-muted hover:text-foreground transition-colors"
+            >
+              FAQ
+            </a>
+          </nav>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
+          <div className="flex items-center gap-4 border-l-[2px] border-border/20 pl-8">
+            <ThemeToggle />
+            <Link
+              href="/login"
+              className="text-sm font-bold text-foreground hover:text-primary transition-colors"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/signup"
+              className="neo-btn neo-btn-primary px-5 py-2.5 text-sm"
+            >
+              Start Free
+            </Link>
+          </div>
+        </div>
 
-          <Link
-            href="/login"
-            className="hidden sm:inline-flex neo-btn neo-btn-ghost px-4 py-2 text-sm"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="neo-btn neo-btn-primary px-4 py-2 text-sm"
-          >
-            Start Free
-          </Link>
-
-          {/* Mobile hamburger */}
+        {/* Mobile Actions (Visible on <lg) */}
+        <div className="flex items-center gap-3 lg:hidden">
+          {/* Hamburger Button */}
           <button
-            className="md:hidden neo-btn neo-btn-ghost p-2 ml-1"
+            className="w-11 h-11 border-[2.5px] border-border flex items-center justify-center bg-surface transition-colors hover:bg-background-muted active:scale-95"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            style={{ boxShadow: mobileMenuOpen ? "none" : "2px 2px 0px var(--border)", transform: mobileMenuOpen ? "translate(2px, 2px)" : "translate(0, 0)" }}
           >
             <svg
-              width="18"
-              height="18"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -102,9 +107,8 @@ export function Header() {
                 </>
               ) : (
                 <>
-                  <line x1="3" y1="7" x2="21" y2="7" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="17" x2="21" y2="17" />
+                  <line x1="4" y1="8" x2="20" y2="8" />
+                  <line x1="4" y1="16" x2="20" y2="16" />
                 </>
               )}
             </svg>
@@ -112,34 +116,53 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t-[2.5px] border-border bg-surface animate-fade-in">
-          <div className="flex flex-col p-4 gap-1">
+      {/* Mobile Dropdown Sheet */}
+      <div
+        className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-400 ease-in-out border-b-[2.5px] border-border bg-surface ${
+          mobileMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0 border-b-0"
+        }`}
+      >
+        <div className="px-5 py-6 flex flex-col gap-5">
+          <nav className="flex flex-col gap-4 border-b-[2px] border-border/10 pb-5">
             <a
               href="#features"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-3 font-bold text-sm border-[2px] border-transparent hover:border-border hover:bg-background-muted transition-colors"
+              className="text-xl font-black text-foreground hover:text-primary transition-colors"
             >
               Features
             </a>
             <a
               href="#faq"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-3 font-bold text-sm border-[2px] border-transparent hover:border-border hover:bg-background-muted transition-colors"
+              className="text-xl font-black text-foreground hover:text-primary transition-colors"
             >
               FAQ
             </a>
+          </nav>
+          
+          <div className="flex items-center justify-between pb-2">
+            <span className="text-sm font-bold text-muted uppercase tracking-wider">Appearance</span>
+            <ThemeToggle />
+          </div>
+
+          <div className="flex flex-col gap-3 pt-2">
             <Link
               href="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-3 font-bold text-sm border-[2px] border-transparent hover:border-border hover:bg-background-muted transition-colors"
+              className="neo-btn neo-btn-ghost px-5 py-3.5 text-base justify-center w-full"
             >
-              Log in
+              Log In
+            </Link>
+            <Link
+              href="/signup"
+              onClick={() => setMobileMenuOpen(false)}
+              className="neo-btn neo-btn-primary px-5 py-3.5 text-base justify-center w-full"
+            >
+              Start Free
             </Link>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

@@ -372,28 +372,46 @@ npm run dev
 # 24. FILE CHANGE MAP
 
 ```text
-Landing Page Updates:
-- src/app/page.tsx
-- src/components/landing/*
+Landing Page (Refinement v2 — complete):
+- src/components/landing/header.tsx     ← Responsive nav (hamburger hidden desktop, animated mobile sheet)
+- src/components/landing/hero.tsx       ← Mobile-safe, clamp typography, staggered entrance
+- src/components/landing/features.tsx  ← How-It-Works grid + mixed feature hierarchy
+- src/components/landing/faq.tsx        ← Refined accordion with smooth easing
+- src/components/landing/footer.tsx     ← Dark visual anchor with status strip
 
-Auth Flow:
+Auth Pages:
 - src/app/login/page.tsx
 - src/app/signup/page.tsx
 - src/app/actions/auth.ts
+- src/components/auth/login-form.tsx
+- src/components/auth/signup-form.tsx
 
 Database Migrations:
 - supabase/username_auth_migration.sql
 
-Dashboard & Metrics:
+Dashboard & Metrics (Freeze - do not redesign):
 - src/app/dashboard/page.tsx
+- src/app/dashboard/loading.tsx
 - src/components/dashboard/metric-card.tsx
+- src/components/dashboard/dashboard-shell.tsx
+- src/components/dashboard/header.tsx
+- src/components/dashboard/sidebar.tsx
 
 Invoice Logic (CRUD):
 - src/app/actions/invoices.ts
-- src/components/invoices/*
+- src/components/invoices/invoice-list.tsx
+- src/components/invoices/invoice-form.tsx
+- src/components/invoices/status-badge.tsx
 
-Styling & Theming:
-- src/app/globals.css
+Client Logic (CRUD):
+- src/components/clients/client-list.tsx
+- src/components/clients/client-form-modal.tsx
+
+Theme System:
+- src/app/globals.css                   ← Full design system with dark mode palette
+- src/components/theme-provider.tsx     ← Context provider for dark/light/system
+- src/components/theme-toggle.tsx       ← Sun/Moon toggle UI
+- src/app/layout.tsx                    ← ThemeProvider integration + flash prevention
 ```
 
 ---
@@ -401,26 +419,67 @@ Styling & Theming:
 # 25. AI HANDOFF SUMMARY
 
 ## PROJECT IN ONE PARAGRAPH
-DashBill is a robust Next.js 16 app designed for freelancers to create and manage invoices. It features a bold Neobrutalism UI, relies heavily on Server Actions for data mutations, and uses Supabase for authentication and database management with strict Row Level Security.
+DashBill is a robust Next.js 16 app designed for freelancers to create and manage invoices. It features a Bold Modern SaaS + Playful Brutalism + Kinetic UI design, relies entirely on Server Actions for data mutations, and uses Supabase for authentication and database management with strict Row Level Security.
 
 ## CURRENT ARCHITECTURE
-Next.js App Router. Server Components handle layouts and secure data fetching. Client Components handle interactive UI (forms). Server Actions manage database CRUD. Styling is powered by Tailwind v4 utilizing a custom Neobrutalism CSS theme.
+Next.js App Router. Server Components handle layouts and secure data fetching. Client Components handle interactive UI (forms, toggles). Server Actions manage database CRUD. Styling is powered by Tailwind v4 utilizing a custom semantic CSS variable system with full dark/light mode support.
 
 ## MOST IMPORTANT FILES
-* `src/app/globals.css`
-* `src/app/actions/invoices.ts`
-* `src/app/dashboard/page.tsx`
-* `supabase/schema.sql`
-* `src/app/actions/auth.ts`
+* `src/app/globals.css` — full design token system, dark mode palette, animation keyframes
+* `src/app/actions/invoices.ts` — invoice CRUD business logic
+* `src/app/dashboard/page.tsx` — dashboard overview (FROZEN — do not redesign)
+* `supabase/schema.sql` — database schema and RLS policies
+* `src/app/actions/auth.ts` — auth flow (synthetic email architecture)
 
 ## WORKING FEATURES
-Authentication, Dashboard Overview Metrics, Invoice Data Structures, Neobrutalist Design System.
+Authentication (username + password, synthetic email hidden), Dashboard Overview (metric hierarchy frozen), Clients CRUD, Invoices CRUD, PDF Export, Status Tracking, Dark Mode, Theme Toggle.
+
+## DESIGN SYSTEM — FINAL STATE
+- **Philosophy**: Bold Modern SaaS + Playful Brutalism + Kinetic UI
+- **Light Mode**: Warm off-white `#f7f6f2` bg, pitch black `#111` borders + shadows
+- **Dark Mode**: Layered warm charcoal surfaces (`#10110F` → `#1B1C18` → `#22231E`), cream text `#F1EFE6`, soft border `rgba(241,239,230,0.16)`, dark shadow `rgba(0,0,0,0.65)`
+- **Primary**: Vibrant yellow `#FFE600`
+- **Animation easing**: `cubic-bezier(0.22, 1, 0.36, 1)` — entrance 400-850ms, translate 8-16px max
+- **Reduced motion**: respected via `@media (prefers-reduced-motion: reduce)`
+
+## LANDING PAGE — FINAL STATE
+- **Header**: Desktop shows logo + nav links + theme toggle + Login + Start Free. Hamburger `lg:hidden`. Mobile shows logo + hamburger only, dropdown reveals full nav.
+- **Hero**: `clamp()` font-size, staggered entrance animations (eyebrow → h1 → desc → CTAs → product), floating cards contained within relative parent (no overflow on 320px+)
+- **Features**: How-It-Works in 4-column grid (desktop) / vertical (mobile), then mixed-hierarchy feature grid (1 large + 3 small), overlapping CTA panel
+- **FAQ**: CSS grid-template-rows accordion, `cubic-bezier(0.22,1,0.36,1)` easing, staggered entrance
+- **Footer**: Dark `bg-foreground` anchor with status strip, version badge
+
+## NAVBAR BEHAVIOR
+- **Desktop (`lg+`)**: `hidden lg:flex` — full navigation visible, hamburger hidden
+- **Mobile (`<lg`)**: hamburger button visible, triggers animated `max-h` dropdown sheet, ThemeToggle inside sheet
+
+## DASHBOARD — FROZEN
+Dashboard composition is intentionally frozen at current state:
+- Primary metric: Revenue (large left card with trend)
+- Secondary metrics: Pending, Overdue, Clients (right column)
+- Activity: Recent Invoices + Recent Clients lists
+Do NOT redesign metric hierarchy unless only fixing dark mode or accessibility.
+
+## IDENTITY SAFETY
+- Synthetic emails (`username@users.dashbill.local`) are NEVER displayed to users
+- All identity display uses `profiles.username` fetched server-side
+- RLS strictly filters all data by `auth.uid()`
 
 ## IMPORTANT CONSTRAINTS
-Do not introduce standard modern UI elements (rounded corners, soft shadows). Stick to `.neo-*` classes. Always mutate data via Server Actions, not client-side fetches. Do not bypass Supabase RLS.
+- Use `.neo-*` CSS utility classes from `globals.css` (not ad-hoc Tailwind)
+- Use `var(--shadow-color)` for hard shadows, NOT `var(--border)` (border is rgba in dark mode)
+- All data mutations via Server Actions only
+- Do not bypass Supabase RLS
+- No new npm packages
 
 ## CURRENT WEAK POINTS
-Input validation in server actions is manual and could be tedious to scale.
+- Input validation in server actions is manual (no Zod)
+- No profile edit / password reset page yet
+- Advanced settings not implemented
 
 ## WHERE TO EDIT
-To edit the UI theme, modify `globals.css`. To change data operations, edit files in `src/app/actions/`. To edit pages, navigate through the `src/app/` directory structure.
+- UI theme / dark mode: `globals.css`
+- Data operations: `src/app/actions/`
+- Landing UI: `src/components/landing/`
+- Dashboard UI: `src/components/dashboard/` (see frozen note above)
+- Auth UI: `src/components/auth/`

@@ -71,25 +71,25 @@
 
 /* --- CSS Variables: Dark Mode --- */
 .dark {
-  --background: #101010;
-  --background-muted: #171717;
-  --surface: #1a1a1a;
-  --surface-elevated: #222222;
-  --foreground: #f0ede8;
-  --muted: #777770;
-  --border: #f0ede8;
+  --background: #10110F;
+  --background-muted: #151613;
+  --surface: #1B1C18;
+  --surface-elevated: #22231E;
+  --foreground: #F1EFE6;
+  --muted: #99998F;
+  --border: rgba(241, 239, 230, 0.16);
 
   --primary: #ffe600;
   --primary-hover: #f0d800;
 
-  --success: #94d61a;
-  --warning: #ffc700;
-  --danger: #f87171;
-  --info: #60a5fa;
-  --secondary: #c084fc;
+  --success: #a3e635; /* Muted lime */
+  --warning: #fbbf24; /* Warm amber */
+  --danger: #f87171;  /* Coral */
+  --info: #3b82f6;    /* Medium electric blue */
+  --secondary: #a78bfa; /* Soft lavender */
   --accent-pink: #f472b6;
 
-  --shadow-color: rgba(255, 255, 255, 0.18);
+  --shadow-color: rgba(0, 0, 0, 0.65);
 
   --shadow-sm: 2px 2px 0px var(--shadow-color);
   --shadow-md: 4px 4px 0px var(--shadow-color);
@@ -189,12 +189,12 @@ h4, h5, h6 {
 
 .neo-btn:hover:not(:disabled) {
   box-shadow: var(--shadow-md);
-  transform: translate(-1px, -1px);
+  transform: translate(-2px, -2px);
 }
 
 .neo-btn:active:not(:disabled) {
   box-shadow: none;
-  transform: translate(2.5px, 2.5px);
+  transform: translate(2px, 2px);
 }
 
 .neo-btn:disabled {
@@ -329,7 +329,7 @@ h4, h5, h6 {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -345,7 +345,7 @@ h4, h5, h6 {
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-12px);
   }
   to {
     opacity: 1;
@@ -356,7 +356,7 @@ h4, h5, h6 {
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.985);
   }
   to {
     opacity: 1;
@@ -370,27 +370,27 @@ h4, h5, h6 {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.4s ease forwards;
+  animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s ease forwards;
+  animation: fadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.35s ease forwards;
+  animation: slideInLeft 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.25s ease forwards;
+  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* Stagger helpers */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.10s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.20s; }
-.stagger-5 { animation-delay: 0.25s; }
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
 
 /* ===========================
    Reduced Motion

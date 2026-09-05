@@ -45,7 +45,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             <div
               className="w-7 h-7 bg-primary border-[2px] border-border flex items-center justify-center transition-transform duration-150 group-hover:-translate-y-0.5"
-              style={{ boxShadow: "2px 2px 0px var(--border)" }}
+              style={{ boxShadow: "2px 2px 0px var(--shadow-color)" }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="2" x2="12" y2="22" />
