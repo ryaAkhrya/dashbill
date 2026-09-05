@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/login-form";
+import Link from "next/link";
 
 export const metadata = {
   title: "Login — DashBill",
@@ -56,9 +57,19 @@ export default async function LoginPage() {
       </div>
 
       {/* Form Panel (Right on Desktop, Bottom on Mobile) */}
-      <div className="flex flex-1 items-center justify-center p-6 sm:p-12 relative bg-background">
-        <div className="w-full max-w-md">
-          <LoginForm />
+      <div className="flex flex-1 flex-col p-6 sm:p-12 relative bg-background">
+        <div className="w-full mb-8 lg:mb-0">
+          <Link 
+            href="/" 
+            className="inline-flex font-bold text-foreground hover:underline decoration-2 underline-offset-4"
+          >
+            &larr; Back to Home
+          </Link>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-md">
+            <LoginForm />
+          </div>
         </div>
       </div>
     </main>

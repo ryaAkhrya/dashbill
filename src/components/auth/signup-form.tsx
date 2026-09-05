@@ -60,10 +60,10 @@ export function SignupForm() {
             name="password"
             type="password"
             required
-            minLength={6}
+            minLength={8}
             autoComplete="new-password"
             className="neo-input w-full px-3 py-2 rounded-md"
-            placeholder="Min. 6 characters"
+            placeholder="Min. 8 characters"
           />
         </div>
         <div>
@@ -78,7 +78,7 @@ export function SignupForm() {
             name="confirmPassword"
             type="password"
             required
-            minLength={6}
+            minLength={8}
             autoComplete="new-password"
             className="neo-input w-full px-3 py-2 rounded-md"
             placeholder="••••••••"
