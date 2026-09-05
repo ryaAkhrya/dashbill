@@ -34,7 +34,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-28 sm:py-32 px-4 sm:px-6 bg-background-muted border-y-[2.5px] border-border mt-28">
+    <section id="faq" className="py-28 sm:py-32 px-4 sm:px-6 bg-background border-y-[2.5px] border-border mt-28 ledger-pattern">
       <div className="max-w-2xl mx-auto">
         <div className="mb-14 animate-fade-in-up">
           <div

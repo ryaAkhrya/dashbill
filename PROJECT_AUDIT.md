@@ -407,11 +407,12 @@ Client Logic (CRUD):
 - src/components/clients/client-list.tsx
 - src/components/clients/client-form-modal.tsx
 
-Theme System:
-- src/app/globals.css                   ← Full design system with dark mode palette
+Theme System & Branding:
+- src/app/globals.css                   ← Full design system with dark mode palette + ledger patterns
 - src/components/theme-provider.tsx     ← Context provider for dark/light/system
 - src/components/theme-toggle.tsx       ← Sun/Moon toggle UI
-- src/app/layout.tsx                    ← ThemeProvider integration + flash prevention
+- src/app/layout.tsx                    ← ThemeProvider integration + metadata (favicon removed for auto-discovery)
+- src/app/icon.svg                      ← DashBill brand mark (Yellow Square + Black "$")
 ```
 
 ---
@@ -435,9 +436,10 @@ Next.js App Router. Server Components handle layouts and secure data fetching. C
 Authentication (username + password, synthetic email hidden), Dashboard Overview (metric hierarchy frozen), Clients CRUD, Invoices CRUD, PDF Export, Status Tracking, Dark Mode, Theme Toggle.
 
 ## DESIGN SYSTEM — FINAL STATE
-- **Philosophy**: Bold Modern SaaS + Playful Brutalism + Kinetic UI
-- **Light Mode**: Warm off-white `#f7f6f2` bg, pitch black `#111` borders + shadows
-- **Dark Mode**: Layered warm charcoal surfaces (`#10110F` → `#1B1C18` → `#22231E`), cream text `#F1EFE6`, soft border `rgba(241,239,230,0.16)`, dark shadow `rgba(0,0,0,0.65)`
+- **Philosophy**: Bold Modern SaaS + Playful Brutalism + Kinetic UI + Invoice Workspace/Ledger
+- **Background System**: Uses subtle `ledger-pattern` (40px grids) and `ledger-lines` to create the feeling of a financial document workspace, removing the "empty white/black background" feel.
+- **Light Mode**: Warm off-white `#f7f6f2` bg, pitch black `#111` borders + shadows. Section rhythm uses shifts between `#f7f6f2` (bg), `#eeecea` (muted), and `#ffffff` (surface).
+- **Dark Mode**: Layered warm charcoal surfaces (`#0F100E` → `#131410` → `#181914` → `#1D1E19` → `#23241E`), cream text `#F1EFE6`, soft border `rgba(241,239,230,0.16)`, dark shadow `rgba(0,0,0,0.65)`.
 - **Primary**: Vibrant yellow `#FFE600`
 - **Animation easing**: `cubic-bezier(0.22, 1, 0.36, 1)` — entrance 400-850ms, translate 8-16px max
 - **Reduced motion**: respected via `@media (prefers-reduced-motion: reduce)`

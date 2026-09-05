@@ -71,13 +71,17 @@
 
 /* --- CSS Variables: Dark Mode --- */
 .dark {
-  --background: #10110F;
-  --background-muted: #151613;
-  --surface: #1B1C18;
-  --surface-elevated: #22231E;
+  --background: #0F100E;
+  --background-muted: #131410;
+  --surface: #181914;
+  --surface-elevated: #1D1E19;
+  --surface-strong: #23241E;
   --foreground: #F1EFE6;
-  --muted: #99998F;
+  --foreground-secondary: #C8C6BC;
+  --muted: #96968D;
+  --border-subtle: rgba(241, 239, 230, 0.10);
   --border: rgba(241, 239, 230, 0.16);
+  --border-strong: rgba(241, 239, 230, 0.26);
 
   --primary: #ffe600;
   --primary-hover: #f0d800;
@@ -130,7 +134,31 @@ body {
 }
 
 .dark .dot-pattern {
-  background-image: radial-gradient(rgba(240, 237, 232, 0.12) 0.8px, transparent 0.8px);
+  background-image: radial-gradient(rgba(241, 239, 230, 0.12) 0.8px, transparent 0.8px);
+}
+
+.ledger-pattern {
+  background-image: 
+    linear-gradient(rgba(17, 17, 17, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.04) 1px, transparent 1px);
+  background-size: 100% 40px, 40px 100%;
+  background-position: -1px -1px, -1px -1px;
+}
+
+.dark .ledger-pattern {
+  background-image: 
+    linear-gradient(rgba(241, 239, 230, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 239, 230, 0.05) 1px, transparent 1px);
+}
+
+.ledger-lines {
+  background-image: linear-gradient(rgba(17, 17, 17, 0.04) 1px, transparent 1px);
+  background-size: 100% 40px;
+  background-position: 0 -1px;
+}
+
+.dark .ledger-lines {
+  background-image: linear-gradient(rgba(241, 239, 230, 0.05) 1px, transparent 1px);
 }
 
 /* ===========================

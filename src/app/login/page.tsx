@@ -16,7 +16,7 @@ export default async function LoginPage() {
   if (user) redirect("/dashboard");
 
   return (
-    <main className="min-h-screen flex flex-col lg:grid lg:grid-cols-2 bg-background">
+    <main className="min-h-screen flex flex-col lg:grid lg:grid-cols-2 bg-background ledger-pattern">
       {/* Left: Brand Panel */}
       <div className="flex flex-col justify-between p-8 lg:p-14 bg-foreground lg:border-r-[2.5px] border-b-[2.5px] lg:border-b-0 border-border relative overflow-hidden">
         {/* Background dot texture */}

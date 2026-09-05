@@ -6,6 +6,10 @@ function ProductPreview() {
       {/* Decorative connection line (desktop only) */}
       <div className="hidden lg:block absolute top-12 -left-24 w-24 border-t-[2.5px] border-dashed border-border/40 z-0"></div>
       
+      {/* Backing field for depth */}
+      <div className="absolute -inset-4 sm:-inset-6 bg-surface-elevated border-[2.5px] border-border z-0 hidden sm:block" style={{ transform: 'rotate(1deg)' }}></div>
+      <div className="absolute -inset-4 sm:-inset-6 bg-background-muted border-[2.5px] border-border z-0 hidden sm:block" style={{ transform: 'rotate(-0.5deg)' }}></div>
+
       {/* Main dashboard mock */}
       <div
         className="bg-surface border-[2.5px] border-border relative overflow-hidden z-10"
@@ -110,8 +114,11 @@ function ProductPreview() {
 
 export function Hero() {
   return (
-    <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 overflow-hidden">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 overflow-hidden ledger-lines">
+      {/* Decorative vertical ledger line on the left (desktop) */}
+      <div className="hidden lg:block absolute top-0 bottom-0 left-[8%] w-[1px] bg-border/5 z-0" aria-hidden="true" />
+      
+      <div className="max-w-[1200px] mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
           {/* Left: Text content */}
           <div className="flex-1 w-full lg:max-w-[500px]">

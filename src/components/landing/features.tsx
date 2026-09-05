@@ -125,7 +125,7 @@ export function Features() {
   return (
     <>
       {/* Workflow section - Horizontal on Desktop, Vertical on Mobile */}
-      <section id="features" className="py-20 px-5 border-y-[2.5px] border-border bg-background-muted relative overflow-hidden dot-pattern">
+      <section id="features" className="py-20 px-5 border-y-[2.5px] border-border bg-surface relative overflow-hidden dot-pattern">
         <div className="max-w-[1200px] mx-auto relative z-10">
           <div className="mb-16 text-center max-w-2xl mx-auto">
             <div
@@ -166,7 +166,7 @@ export function Features() {
       </section>
 
       {/* Feature highlights - Mixed grid composition */}
-      <section className="py-20 px-5 bg-background border-b-[2.5px] border-border relative">
+      <section className="py-20 px-5 bg-background-muted border-b-[2.5px] border-border relative ledger-lines">
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
