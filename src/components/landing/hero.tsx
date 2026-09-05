@@ -1,12 +1,8 @@
 import Link from "next/link";
-import { demoLoginAction } from "@/app/actions/auth";
 
 export function Hero() {
   return (
     <section className="relative pt-24 pb-16 px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
-      <div className="neo-badge bg-secondary text-black mb-6 px-4 py-1 text-sm border-2 border-black [box-shadow:2px_2px_0px_#000]">
-        DashBill is now in Beta
-      </div>
       <h1 className="text-5xl sm:text-7xl font-[900] tracking-tight leading-tight mb-6">
         Invoicing for Freelancers, <br className="hidden sm:block" />
         <span className="text-primary">Without the BS.</span>
@@ -22,17 +18,6 @@ export function Hero() {
         >
           Start for Free
         </Link>
-        <form action={async () => {
-          "use server";
-          await demoLoginAction(null);
-        }} className="w-full sm:w-auto">
-          <button
-            type="submit"
-            className="neo-btn neo-btn-ghost bg-white rounded-md px-8 py-4 text-lg w-full"
-          >
-            Try Interactive Demo
-          </button>
-        </form>
       </div>
 
       <div className="mt-16 w-full relative">

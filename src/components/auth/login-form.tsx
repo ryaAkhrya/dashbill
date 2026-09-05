@@ -2,27 +2,16 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { loginAction, demoLoginAction } from "@/app/actions/auth";
+import { loginAction } from "@/app/actions/auth";
 import type { ActionResult } from "@/lib/action-result";
 
 export function LoginForm() {
-  const [loginState, loginFormAction, loginPending] = useActionState<
+  const [state, formAction, pending] = useActionState<
     ActionResult | null,
     FormData
   >(loginAction, null);
 
-  const [demoState, demoFormAction, demoPending] = useActionState<
-    ActionResult | null,
-    FormData
-  >(demoLoginAction, null);
-
-  const error =
-    loginState?.success === false
-      ? loginState.error
-      : demoState?.success === false
-        ? demoState.error
-        : null;
-  const pending = loginPending || demoPending;
+  const error = state?.success === false ? state.error : null;
 
   return (
     <div className="neo-card rounded-md p-8 w-full max-w-sm">
@@ -37,19 +26,19 @@ export function LoginForm() {
         </div>
       )}
 
-      <form action={loginFormAction} className="flex flex-col gap-4">
+      <form action={formAction} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="login-email" className="block text-sm font-bold mb-1">
-            Email
+          <label htmlFor="login-username" className="block text-sm font-bold mb-1">
+            Username
           </label>
           <input
-            id="login-email"
-            name="email"
-            type="email"
+            id="login-username"
+            name="username"
+            type="text"
             required
-            autoComplete="email"
+            autoComplete="username"
             className="neo-input w-full px-3 py-2 rounded-md"
-            placeholder="you@example.com"
+            placeholder="johndoe"
           />
         </div>
         <div>
@@ -74,27 +63,11 @@ export function LoginForm() {
           disabled={pending}
           className="neo-btn neo-btn-primary rounded-md px-4 py-3 w-full"
         >
-          {loginPending ? "Signing in..." : "Login"}
+          {pending ? "Signing in..." : "Login"}
         </button>
       </form>
 
-      <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-black/20" />
-        <span className="text-xs text-foreground/50 font-bold uppercase">
-          or
-        </span>
-        <div className="flex-1 h-px bg-black/20" />
-      </div>
 
-      <form action={demoFormAction}>
-        <button
-          type="submit"
-          disabled={pending}
-          className="neo-btn neo-btn-secondary rounded-md px-4 py-3 w-full"
-        >
-          {demoPending ? "Loading demo..." : "Login as Guest"}
-        </button>
-      </form>
 
       <p className="text-sm text-center mt-6 text-foreground/60">
         Don&apos;t have an account?{" "}

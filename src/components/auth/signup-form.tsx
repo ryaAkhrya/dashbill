@@ -29,19 +29,23 @@ export function SignupForm() {
       <form action={formAction} className="flex flex-col gap-4">
         <div>
           <label
-            htmlFor="signup-email"
+            htmlFor="signup-username"
             className="block text-sm font-bold mb-1"
           >
-            Email
+            Username
           </label>
           <input
-            id="signup-email"
-            name="email"
-            type="email"
+            id="signup-username"
+            name="username"
+            type="text"
             required
-            autoComplete="email"
+            minLength={3}
+            maxLength={30}
+            pattern="[a-zA-Z0-9_]+"
+            title="Username can only contain letters, numbers, and underscores"
+            autoComplete="username"
             className="neo-input w-full px-3 py-2 rounded-md"
-            placeholder="you@example.com"
+            placeholder="johndoe"
           />
         </div>
         <div>

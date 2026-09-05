@@ -12,10 +12,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Redirect authenticated users directly to their dashboard
-  if (user) {
-    redirect("/dashboard");
-  }
+  // The landing page is always public, regardless of auth status
 
   return (
     <main className="min-h-screen flex flex-col bg-background">
