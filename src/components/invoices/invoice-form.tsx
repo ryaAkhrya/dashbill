@@ -75,47 +75,59 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full flex flex-col lg:flex-row gap-8 items-start">
+    <form onSubmit={handleSubmit} className="w-full flex flex-col lg:flex-row gap-8 items-start animate-fade-in-up">
       <div className="flex-1 w-full space-y-6">
         {error && (
-          <div className="border-[3px] border-black bg-[#FCA5A5] text-black shadow-[4px_4px_0px_#000] p-4 font-black uppercase tracking-wide">
+          <div className="border-[2px] border-danger bg-danger/10 text-danger p-4 text-sm font-bold" role="alert">
             {error}
           </div>
         )}
 
         {/* Client & Date Details */}
-        <div className="neo-card p-6 bg-[#D8B4FE] border-[3px] shadow-[6px_6px_0px_#000]">
-          <h2 className="text-xl font-[900] uppercase tracking-wide border-b-[3px] border-black pb-3 mb-4 text-black">
-            Invoice Details
-          </h2>
+        <div className="bg-surface border-[2.5px] border-border p-6" style={{ boxShadow: "6px 6px 0px var(--border)" }}>
+          <div className="flex items-center gap-2 mb-6 border-b-[2.5px] border-border pb-3">
+            <div className="w-6 h-6 bg-secondary border-[2px] border-border flex items-center justify-center">
+              <span className="text-[10px] font-black uppercase text-black">1</span>
+            </div>
+            <h2 className="text-xl font-black uppercase tracking-wide">
+              Invoice Details
+            </h2>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label
                 htmlFor="invoice-client"
-                className="block text-sm font-[900] uppercase mb-2 text-black"
+                className="block text-xs font-black uppercase tracking-wider mb-2"
               >
                 Client
               </label>
-              <select
-                id="invoice-client"
-                required
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-                className="neo-input w-full px-4 py-3 rounded-none border-[3px] text-black font-bold focus:shadow-[4px_4px_0px_#000]"
-              >
-                <option value="">Select a client</option>
-                {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="invoice-client"
+                  required
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  className="neo-input px-3 py-3 text-sm appearance-none pr-10"
+                >
+                  <option value="" disabled>Select a client</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-foreground/50">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div>
               <label
                 htmlFor="invoice-due-date"
-                className="block text-sm font-[900] uppercase mb-2 text-black"
+                className="block text-xs font-black uppercase tracking-wider mb-2"
               >
                 Due Date
               </label>
@@ -125,22 +137,27 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
                 required
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="neo-input w-full px-4 py-3 rounded-none border-[3px] text-black font-bold focus:shadow-[4px_4px_0px_#000]"
+                className="neo-input px-3 py-3 text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Line items */}
-        <div className="neo-card p-6 bg-white border-[3px] shadow-[6px_6px_0px_#000]">
-          <div className="flex items-center justify-between border-b-[3px] border-black pb-3 mb-4">
-            <h2 className="text-xl font-[900] uppercase tracking-wide text-black">
-              Line Items
-            </h2>
+        <div className="bg-surface border-[2.5px] border-border p-6" style={{ boxShadow: "6px 6px 0px var(--border)" }}>
+          <div className="flex items-center justify-between border-b-[2.5px] border-border pb-3 mb-6">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-info border-[2px] border-border flex items-center justify-center">
+                <span className="text-[10px] font-black uppercase text-black">2</span>
+              </div>
+              <h2 className="text-xl font-black uppercase tracking-wide">
+                Line Items
+              </h2>
+            </div>
             <button
               type="button"
               onClick={addItem}
-              className="neo-btn bg-[#A6FF00] rounded-none px-4 py-1.5 text-sm uppercase tracking-wider text-black border-[3px]"
+              className="neo-btn neo-btn-ghost px-3 py-1.5 text-xs border-[2px]"
             >
               + Add Row
             </button>
@@ -148,7 +165,7 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
 
           <div className="space-y-4">
             {/* Header row (desktop) */}
-            <div className="hidden sm:grid grid-cols-12 gap-3 text-xs font-[900] uppercase tracking-wider text-black">
+            <div className="hidden sm:grid grid-cols-12 gap-3 text-xs font-black uppercase tracking-wider text-muted">
               <div className="col-span-6">Description</div>
               <div className="col-span-2">Qty</div>
               <div className="col-span-2">Price</div>
@@ -160,10 +177,13 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
               return (
                 <div
                   key={index}
-                  className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end bg-black/5 p-4 sm:p-2 sm:bg-transparent border-[3px] sm:border-0 border-black relative"
+                  className={`
+                    grid grid-cols-1 sm:grid-cols-12 gap-3 items-end p-4 sm:p-0
+                    ${index > 0 ? "pt-4 border-t-[2px] border-border/20 sm:pt-0 sm:border-0" : ""}
+                  `}
                 >
                   <div className="sm:col-span-6">
-                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                    <label className="block text-xs font-black uppercase tracking-wider mb-1 sm:hidden">
                       Description
                     </label>
                     <input
@@ -173,11 +193,11 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
                         updateItem(index, "description", e.target.value)
                       }
                       placeholder="Service description"
-                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                      className="neo-input px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                    <label className="block text-xs font-black uppercase tracking-wider mb-1 sm:hidden">
                       Qty
                     </label>
                     <input
@@ -192,11 +212,11 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
                           parseInt(e.target.value) || 0
                         )
                       }
-                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                      className="neo-input px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold mb-1 sm:hidden">
+                    <label className="block text-xs font-black uppercase tracking-wider mb-1 sm:hidden">
                       Price
                     </label>
                     <input
@@ -212,21 +232,24 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
                           parseFloat(e.target.value) || 0
                         )
                       }
-                      className="neo-input w-full px-3 py-2 rounded-none border-[3px] text-black font-bold"
+                      className="neo-input px-3 py-2 text-sm"
                     />
                   </div>
-                  <div className="sm:col-span-2 flex items-center justify-between sm:justify-end gap-2">
-                    <span className="text-base font-black text-black bg-[#FFE600] px-2 py-1 border-[2px] border-black sm:bg-transparent sm:border-0 sm:px-0">
+                  <div className="sm:col-span-2 flex items-center justify-between sm:justify-end gap-3 h-full pb-[5px] sm:pb-0">
+                    <span className="text-sm font-black whitespace-nowrap">
                       {formatCurrency(lineTotal)}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeItem(index)}
                       disabled={items.length === 1}
-                      className="text-white bg-[#F87171] border-[2px] border-black disabled:opacity-50 disabled:bg-gray-400 px-2 py-0.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-transform shadow-[2px_2px_0px_#000] active:shadow-none font-bold"
+                      className="text-muted hover:text-danger disabled:opacity-30 transition-colors p-1"
                       aria-label="Remove item"
                     >
-                      &#x2715;
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -236,22 +259,28 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
         </div>
       </div>
 
-      {/* Totals & Submit Sidebar */}
-      <div className="w-full lg:w-80 shrink-0 space-y-6">
-        <div className="neo-card p-6 bg-[#FFE600] border-[3px] shadow-[6px_6px_0px_#000]">
-          <h2 className="text-xl font-[900] uppercase tracking-wide border-b-[3px] border-black pb-3 mb-4 text-black">
-            Summary
-          </h2>
+      {/* Sticky Totals & Submit Sidebar */}
+      <div className="w-full lg:w-[340px] shrink-0 space-y-6 lg:sticky lg:top-8">
+        <div className="bg-primary border-[2.5px] border-border p-6" style={{ boxShadow: "6px 6px 0px var(--border)" }}>
+          <div className="flex items-center gap-2 mb-6 border-b-[2.5px] border-border pb-3">
+            <div className="w-6 h-6 bg-background border-[2px] border-border flex items-center justify-center">
+              <span className="text-[10px] font-black uppercase text-foreground">3</span>
+            </div>
+            <h2 className="text-xl font-black uppercase tracking-wide text-black">
+              Summary
+            </h2>
+          </div>
+          
           <div className="space-y-4">
-            <div className="flex justify-between items-center text-sm font-bold">
-              <span className="uppercase text-black/70">Subtotal</span>
-              <span className="text-lg">{formatCurrency(subtotal)}</span>
+            <div className="flex justify-between items-center text-sm font-bold text-black">
+              <span className="uppercase text-black/70 font-black">Subtotal</span>
+              <span className="text-base">{formatCurrency(subtotal)}</span>
             </div>
             
-            <div className="flex justify-between items-center gap-2 font-bold">
+            <div className="flex justify-between items-center gap-4 text-black">
               <label
                 htmlFor="tax-rate"
-                className="uppercase text-black/70 text-sm shrink-0"
+                className="uppercase text-black/70 text-sm font-black shrink-0"
               >
                 Tax (%)
               </label>
@@ -263,18 +292,18 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
                 step={0.1}
                 value={taxRate}
                 onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                className="neo-input px-2 py-1 rounded-none border-[2px] text-sm w-20 text-right bg-white"
+                className="neo-input px-2 py-1.5 text-sm w-24 text-right bg-surface"
               />
             </div>
             
-            <div className="flex justify-between items-center text-sm font-bold border-b-[3px] border-black pb-4">
-              <span className="uppercase text-black/70">Tax Amt</span>
-              <span className="text-lg">{formatCurrency(taxAmount)}</span>
+            <div className="flex justify-between items-center text-sm font-bold border-b-[2.5px] border-border pb-4 text-black">
+              <span className="uppercase text-black/70 font-black">Tax Amt</span>
+              <span className="text-base">{formatCurrency(taxAmount)}</span>
             </div>
 
-            <div className="flex justify-between items-center pt-2">
-              <span className="font-[900] uppercase text-black text-xl">Total</span>
-              <span className="font-[900] text-3xl bg-white px-2 py-1 border-[3px] border-black shadow-[2px_2px_0px_#000] -rotate-1">
+            <div className="flex justify-between items-center pt-2 text-black">
+              <span className="font-black uppercase text-xl">Total</span>
+              <span className="font-black text-2xl bg-surface px-3 py-1 border-[2.5px] border-border" style={{ boxShadow: "2px 2px 0px var(--border)", transform: "rotate(-1deg)" }}>
                 {formatCurrency(total)}
               </span>
             </div>
@@ -286,14 +315,15 @@ export function InvoiceForm({ clients }: { clients: Client[] }) {
           <button
             type="submit"
             disabled={loading}
-            className="neo-btn bg-[#60A5FA] border-[3px] text-black px-6 py-4 text-lg font-black uppercase tracking-wider rounded-none shadow-[6px_6px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#000] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+            className="neo-btn bg-foreground text-background border-[2.5px] border-border px-6 py-4 text-sm font-black uppercase tracking-widest w-full"
+            style={{ boxShadow: "4px 4px 0px var(--border)" }}
           >
-            {loading ? "Creating..." : "Save Invoice"}
+            {loading ? "Creating…" : "Save Invoice"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="neo-btn bg-white border-[3px] text-black px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-none shadow-[4px_4px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_#000]"
+            className="neo-btn neo-btn-ghost px-6 py-3 text-sm font-bold uppercase tracking-wider w-full"
           >
             Cancel
           </button>

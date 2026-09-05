@@ -1,142 +1,437 @@
 @import "tailwindcss";
 
 /* ===========================
-   DashBill — Intense Neobrutalism Design System
+   DashBill — Bold Modern SaaS + Playful Brutalism
+   Design System v2
    =========================== */
 
+/* --- Tailwind Theme Tokens --- */
 @theme inline {
-  /* Color Palette */
-  --color-background: #FFFFFF;
-  --color-background-muted: #FFFDF9; /* Warm tint */
-  --color-foreground: #000000;
+  /* Semantic Colors - Light */
+  --color-background: var(--background);
+  --color-background-muted: var(--background-muted);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
 
-  --color-primary: #FFE600; /* Vibrant Yellow */
-  --color-secondary: #D8B4FE; /* Lavender */
-  --color-destructive: #F87171; /* Coral Red */
-  --color-destructive-soft: #FCA5A5;
-  --color-lime: #A6FF00;
-  --color-pink: #FF90E8;
-  --color-blue: #60A5FA;
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+
+  /* Semantic Accents */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-secondary: var(--secondary);
+  --color-accent-pink: var(--accent-pink);
+
+  /* Destructive alias */
+  --color-destructive: var(--danger);
+  --color-destructive-soft: #fca5a5;
+
+  /* Hard shadow */
+  --color-shadow: var(--shadow-color);
 
   /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* --- CSS Variables: Light Mode --- */
+:root {
+  --background: #f7f6f2;
+  --background-muted: #eeecea;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --foreground: #111111;
+  --muted: #888880;
+  --border: #111111;
+
+  --primary: #ffe600;
+  --primary-hover: #f0d800;
+
+  --success: #a6ff00;
+  --warning: #ffc700;
+  --danger: #f87171;
+  --info: #60a5fa;
+  --secondary: #d8b4fe;
+  --accent-pink: #ff90e8;
+
+  --shadow-color: #111111;
+
+  /* Hard shadow shorthand values */
+  --shadow-sm: 2px 2px 0px var(--shadow-color);
+  --shadow-md: 4px 4px 0px var(--shadow-color);
+  --shadow-lg: 6px 6px 0px var(--shadow-color);
+  --shadow-xl: 8px 8px 0px var(--shadow-color);
+}
+
+/* --- CSS Variables: Dark Mode --- */
+.dark {
+  --background: #101010;
+  --background-muted: #171717;
+  --surface: #1a1a1a;
+  --surface-elevated: #222222;
+  --foreground: #f0ede8;
+  --muted: #777770;
+  --border: #f0ede8;
+
+  --primary: #ffe600;
+  --primary-hover: #f0d800;
+
+  --success: #94d61a;
+  --warning: #ffc700;
+  --danger: #f87171;
+  --info: #60a5fa;
+  --secondary: #c084fc;
+  --accent-pink: #f472b6;
+
+  --shadow-color: rgba(255, 255, 255, 0.18);
+
+  --shadow-sm: 2px 2px 0px var(--shadow-color);
+  --shadow-md: 4px 4px 0px var(--shadow-color);
+  --shadow-lg: 6px 6px 0px var(--shadow-color);
+  --shadow-xl: 8px 8px 0px var(--shadow-color);
+}
+
 /* ===========================
    Base Styles
    =========================== */
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Reusable Background Patterns */
-.dot-pattern {
-  background-color: var(--color-background-muted);
-  background-image: radial-gradient(#000000 1px, transparent 1px);
-  background-size: 20px 20px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* ===========================
-   Neobrutalism Utility Classes
+   Background Patterns
    =========================== */
 
-/* Standard brutal card / container */
-.neo-card {
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0px #000;
-  background: var(--color-background);
+.dot-pattern {
+  background-color: var(--background-muted);
+  background-image: radial-gradient(var(--border) 0.8px, transparent 0.8px);
+  background-size: 20px 20px;
+  opacity: 1;
 }
 
-/* Heavy modal container */
-.neo-modal {
-  border: 4px solid #000;
-  box-shadow: 8px 8px 0px #000;
-  background: var(--color-background);
+.dark .dot-pattern {
+  background-image: radial-gradient(rgba(240, 237, 232, 0.12) 0.8px, transparent 0.8px);
 }
 
-/* Brutal button base */
-.neo-btn {
-  border: 3px solid #000;
-  box-shadow: 3px 3px 0px #000;
+/* ===========================
+   Typography
+   =========================== */
+
+h1, h2, h3 {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+h4, h5, h6 {
   font-weight: 800;
-  transition: all 0.1s ease;
+  letter-spacing: -0.02em;
+}
+
+/* ===========================
+   Neobrutalism Cards
+   =========================== */
+
+.neo-card {
+  border: 2.5px solid var(--border);
+  box-shadow: var(--shadow-md);
+  background: var(--surface);
+}
+
+.neo-card-sm {
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+}
+
+.neo-modal {
+  border: 3px solid var(--border);
+  box-shadow: var(--shadow-xl);
+  background: var(--surface);
+}
+
+/* ===========================
+   Button System
+   =========================== */
+
+.neo-btn {
+  border: 2.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  font-weight: 800;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.neo-btn:hover {
-  background-image: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05));
+.neo-btn:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+  transform: translate(-1px, -1px);
 }
 
-.neo-btn:active {
-  box-shadow: 0px 0px 0px #000;
-  transform: translate(3px, 3px);
+.neo-btn:active:not(:disabled) {
+  box-shadow: none;
+  transform: translate(2.5px, 2.5px);
 }
 
-/* Primary variant */
+.neo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.neo-btn:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Variants */
 .neo-btn-primary {
-  background: var(--color-primary);
-  color: #000;
+  background: var(--primary);
+  color: #111;
 }
 
-/* Secondary variant */
+.neo-btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
 .neo-btn-secondary {
-  background: var(--color-secondary);
-  color: #000;
+  background: var(--secondary);
+  color: #111;
 }
 
-/* Destructive variant */
+.neo-btn-success {
+  background: var(--success);
+  color: #111;
+}
+
 .neo-btn-destructive {
-  background: var(--color-destructive);
-  color: #000;
+  background: var(--danger);
+  color: #111;
 }
 
-/* Ghost variant */
+.neo-btn-info {
+  background: var(--info);
+  color: #111;
+}
+
 .neo-btn-ghost {
-  background: var(--color-background);
-  color: #000;
+  background: var(--surface);
+  color: var(--foreground);
 }
 
-/* Edit/Blue variant */
-.neo-btn-edit {
-  background: var(--color-blue);
-  color: #000;
+.neo-btn-ghost:hover:not(:disabled) {
+  background: var(--surface-elevated);
 }
 
-/* Brutal input */
+/* ===========================
+   Input System
+   =========================== */
+
 .neo-input {
-  border: 3px solid #000;
-  background: var(--color-background);
+  border: 2.5px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
   outline: none;
   font-weight: 600;
-  transition: box-shadow 0.1s ease;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  width: 100%;
+}
+
+.neo-input::placeholder {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.neo-input:hover {
+  box-shadow: 0 0 0 1px var(--border);
 }
 
 .neo-input:focus {
-  box-shadow: 4px 4px 0px #000;
+  box-shadow: var(--shadow-md);
 }
 
-/* Brutal badge */
+.neo-input:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-md);
+}
+
+.neo-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--background-muted);
+}
+
+/* ===========================
+   Badge System
+   =========================== */
+
 .neo-badge {
-  border: 2px solid #000;
+  border: 2px solid var(--border);
   font-weight: 900;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.6rem;
-  box-shadow: 2px 2px 0px #000;
+  padding: 0.25rem 0.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
-/* Heading weight override for Neobrutalism */
-h1, h2, h3 {
-  font-weight: 900;
-  letter-spacing: -0.02em;
+/* Status-specific badge colors */
+.badge-draft {
+  background: var(--secondary);
+  color: #111;
+}
+
+.badge-sent {
+  background: var(--info);
+  color: #111;
+}
+
+.badge-paid {
+  background: var(--success);
+  color: #111;
+}
+
+.badge-overdue {
+  background: var(--danger);
+  color: #111;
+}
+
+/* ===========================
+   Animations
+   =========================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.35s ease forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.25s ease forwards;
+}
+
+/* Stagger helpers */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+
+/* ===========================
+   Reduced Motion
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===========================
+   Selection
+   =========================== */
+
+::selection {
+  background: var(--primary);
+  color: #111;
+}
+
+/* ===========================
+   Scrollbar (Webkit)
+   =========================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }

@@ -69,7 +69,7 @@ supabase/
 * **Client Management**: Create, read, update, and delete client information (Name, Email, Address).
 * **Invoice Management**: Create invoices tied to specific clients, add multiple line items (description, quantity, price), and track total amounts and statuses.
 * **PDF Export**: Generate PDF versions of invoices using `@react-pdf/renderer`.
-* **Dark Mode**: Not specifically implemented as the design is based on a high-contrast Neobrutalist approach on a white/light background.
+* **Dark Mode**: Fully supported using a semantic CSS variable system (`globals.css`) that seamlessly toggles between light and dark themes using `.dark` class strategy, managed via a React Context ThemeProvider.
 
 ---
 
@@ -225,16 +225,18 @@ Components are highly modularized by feature. `DashboardShell` acts as the persi
 
 # 12. DESIGN SYSTEM / UI
 
-**Style**: Intense Neobrutalism.
-**Typography**: Inter (sans-serif) for general text, high weight for headings (`font-[900]`).
-**Color Palette**:
-* Background: `#FFFFFF` (White) / `#FFFDF9` (Warm tint)
-* Foreground/Borders: `#000000` (Pitch Black)
-* Accents: Vibrant Yellow (`#FFE600`), Lavender (`#D8B4FE`), Coral Red (`#F87171`), Lime (`#A6FF00`), Pink (`#FF90E8`), Blue (`#60A5FA`).
+**Style**: Bold Modern SaaS + Playful Brutalism + Kinetic UI.
+**Typography**: Inter (sans-serif) for general text, high weight for headings (`font-[900]` / `font-black`).
+**Color Palette (Semantic)**:
+* Uses a CSS variable system mapped via `@theme inline` in `globals.css`.
+* Light/Dark semantic aliases: `--background`, `--surface`, `--foreground`, `--muted`, `--border`.
+* Core Accents: `--primary` (Yellow), `--success` (Lime), `--warning` (Yellow), `--danger` (Red), `--info` (Blue), `--secondary` (Purple).
 **Key Patterns (Custom CSS Utilities)**:
-* `neo-card`, `neo-btn`, `neo-input`, `neo-modal`: Features thick 3px-4px black borders, harsh solid drop shadows (e.g., `4px 4px 0px #000`), and flat background colors. No border-radius (sharp corners).
+* `neo-card`, `neo-btn`, `neo-input`, `neo-modal`, `neo-badge`: Features thick borders (2-3px), solid sharp shadows using semantic `--shadow-color` (e.g. `var(--shadow-md)`), and flat background colors. No border-radius or very minimal (0-4px). No glassmorphism.
 * **Hover/Active States**: Buttons translate/move down-right to simulate a physical push, eliminating the shadow.
+* **Animations**: Uses `.animate-fade-in-up` and `.animate-scale-in` keyframes for entrance choreography.
 * **Layout**: Uses CSS grid and flexbox extensively via Tailwind.
+
 
 ---
 
@@ -311,15 +313,14 @@ Uses Tailwind's standard breakpoint utility classes (`sm:`, `md:`, `lg:`, `xl:`)
 # 18. CURRENT PROJECT STATUS
 
 ## Sudah selesai
-* Landing page structure
+* Landing page structure & Redesign (Header, Hero, Features, FAQ, Footer)
 * Database schema & RLS policies
-* Authentication (Username Login, Signup, Profiles Migration)
-* Dashboard metrics calculation and UI layout
+* Authentication (Username Login, Signup, Profiles Migration, Masked Identity)
+* Dashboard metrics calculation and UI layout (Primary/Secondary hierarchy)
 * Server actions for auth and invoices
-
-## Sudah ada tapi belum lengkap
-* Unverified implementations of Client CRUD forms (logic exists in actions, but UI components not fully audited).
-* Invoice Creation UI logic.
+* Client CRUD forms (List & Animated Modal)
+* Invoice Creation UI (Sticky summary, clean line items builder)
+* Full Semantic CSS Variable system (Light/Dark/System themes)
 
 ## Belum dibuat
 * Advanced settings pages (profile edit, password reset).

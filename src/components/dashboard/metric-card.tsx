@@ -3,66 +3,74 @@ import type { ReactNode } from "react";
 interface MetricCardProps {
   label: string;
   value: string | number;
-  bgColor: string;
-  rawColor?: string;
-  rotation?: string;
-  badgeText?: string;
+  bgColor: string; /* now expects css variable or semantic color class */
   icon?: ReactNode;
   trendPlaceholder?: boolean;
+  className?: string;
+  variant?: "primary" | "secondary";
 }
 
 export function MetricCard({
   label,
   value,
-  rawColor,
-  rotation = "rotate-0",
-  badgeText,
+  bgColor,
   icon,
   trendPlaceholder,
+  className = "",
+  variant = "secondary",
 }: MetricCardProps) {
+  if (variant === "primary") {
+    return (
+      <div
+        className={`relative p-6 sm:p-8 border-[2.5px] border-border bg-surface flex flex-col ${className}`}
+        style={{ boxShadow: "6px 6px 0px var(--border)" }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-black uppercase tracking-wider text-muted">
+            {label}
+          </h2>
+          {icon && (
+            <div className="w-10 h-10 bg-primary border-[2px] border-border flex items-center justify-center" style={{ boxShadow: "2px 2px 0px var(--border)" }}>
+              {icon}
+            </div>
+          )}
+        </div>
+        <div className="flex-1 flex flex-col justify-end">
+          <p className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-foreground mb-4">
+            {value}
+          </p>
+          {trendPlaceholder && (
+            <div className="inline-flex items-center gap-2">
+              <span className="bg-success border-[2px] border-border px-2 py-0.5 text-xs font-black uppercase text-black" style={{ boxShadow: "1px 1px 0px var(--border)" }}>
+                +12%
+              </span>
+              <span className="text-xs font-bold text-muted uppercase">vs last month</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Secondary variant
   return (
     <div
-      className={`relative rounded-none p-6 border-[3px] border-black shadow-[6px_6px_0px_#000] transform transition-transform hover:-translate-y-1 hover:shadow-[8px_8px_0px_#000] ${rotation}`}
-      style={rawColor ? { backgroundColor: rawColor } : {}}
+      className={`relative p-5 border-[2.5px] border-border flex flex-col justify-between group hover:-translate-y-1 transition-transform duration-200 ${bgColor} ${className}`}
+      style={{ boxShadow: "4px 4px 0px var(--border)" }}
     >
-      {/* Corner Decoration / Icon */}
-      {icon && (
-        <div className="absolute top-4 right-4 opacity-90 text-black drop-shadow-[2px_2px_0px_rgba(255,255,255,0.5)]">
-          {icon}
-        </div>
-      )}
-
-      {badgeText && (
-        <span className="inline-block bg-white border-2 border-black font-black text-xs px-2 py-0.5 shadow-[2px_2px_0px_#000] uppercase tracking-wider mb-4 -rotate-2">
-          {badgeText}
-        </span>
-      )}
-
-      <p className="text-sm text-black font-[900] uppercase tracking-wider mb-1">
-        {label}
-      </p>
-      <p className="text-4xl font-[900] tracking-tight text-black mb-4">
-        {value}
-      </p>
-
-      {trendPlaceholder && (
-        <div className="mt-6 pt-4 border-t-[3px] border-black/30 flex items-center gap-3">
-          <svg
-            className="w-20 h-10 text-black drop-shadow-[2px_2px_0px_rgba(255,255,255,0.7)]"
-            viewBox="0 0 100 30"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="0,25 20,15 40,20 60,5 80,10 100,0" />
-          </svg>
-          <span className="text-xs font-black text-black bg-white/70 px-2 py-1 border-2 border-black uppercase shadow-[2px_2px_0px_#000]">
-            +12% vs last month
-          </span>
-        </div>
-      )}
+      <div className="flex justify-between items-start mb-6">
+        <h3 className="text-xs font-black uppercase tracking-wider text-black/70">
+          {label}
+        </h3>
+        {icon && (
+          <div className="text-black opacity-80 group-hover:scale-110 transition-transform">
+            {icon}
+          </div>
+        )}
+      </div>
+      <div>
+        <p className="text-3xl font-black text-black">{value}</p>
+      </div>
     </div>
   );
 }

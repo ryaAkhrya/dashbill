@@ -14,8 +14,17 @@ export default async function DashboardLayout({
 
   if (!user) redirect("/login");
 
+  // Fetch username from profiles table (never expose synthetic email)
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .single();
+
+  const username = profile?.username ?? user.id.slice(0, 8);
+
   return (
-    <DashboardShell userEmail={user.email ?? ""}>
+    <DashboardShell username={username}>
       {children}
     </DashboardShell>
   );
